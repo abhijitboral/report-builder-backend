@@ -12,7 +12,6 @@ await fastify.register(cors, {
 });
 
 fastify.register(userRoutes, { prefix: '/api/users' });
-
 const start = async () => {
 	try {
 		await sequelize.sync();
