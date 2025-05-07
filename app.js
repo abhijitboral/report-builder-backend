@@ -7,7 +7,7 @@ import cors from '@fastify/cors';
 dotenv.config();
 const fastify = Fastify({ logger: true });
 await fastify.register(cors, {
-	origin: 'http://localhost:5173', //true, // or 'http://localhost:5174' for specific frontend
+	origin: true, // or 'http://localhost:5173' for specific frontend
 	credentials: true
 });
 
