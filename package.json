@@ -1,0 +1,19 @@
+{
+	"name": "nodejs-crud-auth-api",
+	"type": "module",
+	"version": "1.0.0",
+	"main": "app.js",
+	"scripts": {
+		"start": "nodemon app.js"
+	},
+	"dependencies": {
+		"@fastify/cors": "^11.0.1",
+		"bcryptjs": "^2.4.3",
+		"dotenv": "^16.3.1",
+		"fastify": "^5.3.2",
+		"jsonwebtoken": "^9.0.0",
+		"nodemon": "^3.1.10",
+		"pg": "^8.10.0",
+		"sequelize": "^6.32.1"
+	}
+}
