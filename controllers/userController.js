@@ -108,10 +108,9 @@ export const deleteUser = async (request, reply) => {
 		const user = await User.findByPk(id);
 
 		if (!user) {
-		return reply.code(404).send({ message: 'User not found' });
+			return reply.code(404).send({ message: 'User not found' });
 		}
     	await user.destroy();
-
     	return reply.code(200).send({ message: 'User deleted successfully' });
   	} catch (error) {
     	console.error('Delete error:', error);
