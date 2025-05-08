@@ -16,10 +16,10 @@ async function userRoutes(fastify, options) {
 	fastify.get('/:id', { preHandler: [authenticate] }, async (request, reply) => {
 		return getUser(request, reply);
 	})
-	fastify.put('/edit/:id', { preHandler: [authenticate] }, async (request, reply) => {
+	fastify.post('/edit/:id', { preHandler: [authenticate] }, async (request, reply) => {
 		return await editUser(request, reply);
 	})
-	fastify.delete('/delete/:id', { preHandler: [authenticate] }, async (request, reply) => {
+	fastify.post('/delete/:id', { preHandler: [authenticate] }, async (request, reply) => {
 		return await deleteUser(request, reply);
 	});
 }

@@ -49,7 +49,11 @@ export const login = async (req, reply) => {
 		return reply.code(401).send({ message: 'Invalid credentials' });
 	}
 	const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-	reply.send({ token });
+	const response = {
+		token,
+		"data":user
+	}
+	reply.code(200).send({ response });
 };
 
 export const getAllUsers = async (request, reply) => {
