@@ -82,7 +82,6 @@ export const getUser = async (request, reply) => {
 }
 
 export const editUser = async (request, reply) => {
-	
 	try {
 		const { id } = request.params;
 		const { username, email, role } = request.body;
@@ -92,7 +91,7 @@ export const editUser = async (request, reply) => {
 		}
 		user.username 	= username;
       	user.email 		= email;
-		user.role = role;
+		user.role 		= role;
 		await user.save();
 
       	return reply.send({ message: 'User updated successfully', user });
