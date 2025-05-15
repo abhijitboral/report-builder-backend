@@ -1,4 +1,4 @@
-import { register, login, getAllUsers,getUser,editUser,deleteUser } from '../controllers/userController.js';
+import { register, login, getAllUsers,getUser,editUser,deleteUser,uploadProfile,editProfile } from '../controllers/userController.js';
 import { authenticate } from '../middlewares/authMiddleware.js';
 
 async function userRoutes(fastify, options) {
@@ -22,5 +22,14 @@ async function userRoutes(fastify, options) {
 	fastify.post('/delete/:id', { preHandler: [authenticate] }, async (request, reply) => {
 		return await deleteUser(request, reply);
 	});
+
+	fastify.post('/upload-profile', { preHandler: [authenticate] }, async (request, reply) => {
+		return await uploadProfile(request, reply);
+	});
+
+	fastify.post('/profile/:id', { preHandler: [authenticate] }, async (request, reply) => {
+		return await editProfile(request, reply);
+	});
+
 }
 export default userRoutes;

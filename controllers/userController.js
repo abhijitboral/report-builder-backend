@@ -1,6 +1,15 @@
 import { User } from '../models/index.js';
+import fs from 'fs';
+import path from 'path';
+import { promisify } from 'util';
+import { pipeline } from 'stream';
+import { fileURLToPath } from 'url';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+
+const pump          = promisify(pipeline);
+const __filename    = fileURLToPath(import.meta.url);
+const __dirname 	= path.dirname(__filename);
 
 export const register = async (request, reply) => {
 	console.log(request.body);
@@ -115,4 +124,45 @@ export const deleteUser = async (request, reply) => {
     	console.error('Delete error:', error);
     	return reply.code(500).send({ message: 'Internal Server Error' });
   	}
+}
+
+export const uploadProfile = async (request, reply) => {
+	try {
+		console.log("Uploading.......");
+			const data      = await req.file();
+			const fileName  = `${Date.now()}-${data.filename}`;
+			const filePath  = path.join(__dirname, '..', 'uploads', fileName);
+			await pump(data.file, fs.createWriteStream(filePath));
+	
+			// Optionally update user record in DB
+			await User.update(
+				{ profileImage: fileName },
+				{ where: { id: req.user.id } }
+			);
+	
+		reply.code(200).send({ status:true, message: 'Uploaded', imageUrl: `/uploads/${fileName}` });
+		
+	} catch (error) {
+		console.error('Delete error:', error);
+    	return reply.code(500).send({ message: 'Internal Server Error' });
+	}
+}
+export const editProfile = async (request, reply) => {
+	try {
+		const { id } = request.params;
+		const { username, email, role } = request.body;
+		const user = await User.findByPk(id);
+		if (!user) {
+			return reply.code(404).send({ message: 'User not found' });
+		}
+		user.username 	= username;
+      	user.email 		= email;
+		//user.role 		= role;
+		await user.save();
+
+      	return reply.send({ message: 'User updated successfully', user });
+	} catch (error) {
+		console.error('Error updating user:', err);
+      	return reply.code(500).send({ message: 'Internal server error' });
+	}
 }

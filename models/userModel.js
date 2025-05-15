@@ -25,5 +25,9 @@ export const createUserModel = (sequelize) =>
             type: 
             DataTypes.STRING,
             defaultValue: 'user',
-        }
+        },
+        profileImage: {
+            type: DataTypes.STRING,
+            allowNull: true,
+        },
 });
