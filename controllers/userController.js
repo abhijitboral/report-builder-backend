@@ -129,15 +129,15 @@ export const deleteUser = async (request, reply) => {
 export const uploadProfile = async (request, reply) => {
 	try {
 		console.log("Uploading.......");
-			const data      = await req.file();
+			const data      = await request.file();
 			const fileName  = `${Date.now()}-${data.filename}`;
 			const filePath  = path.join(__dirname, '..', 'uploads', fileName);
 			await pump(data.file, fs.createWriteStream(filePath));
 	
-			// Optionally update user record in DB
+			// update user record in DB
 			await User.update(
 				{ profileImage: fileName },
-				{ where: { id: req.user.id } }
+				{ where: { id: request.user.id } }
 			);
 	
 		reply.code(200).send({ status:true, message: 'Uploaded', imageUrl: `/uploads/${fileName}` });
