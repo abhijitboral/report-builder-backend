@@ -166,3 +166,24 @@ export const editProfile = async (request, reply) => {
       	return reply.code(500).send({ message: 'Internal server error' });
 	}
 }
+
+export const reset_password = async (request, reply) => {
+	try {
+		const { email, password } = request.body;
+		const hashedPassword = await bcrypt.hash(password, 10);
+		const user = await User.findOne({ where: { email },attributes: { exclude: ['password'] },});
+		if (!user) {
+			return reply.code(404).send({ message: 'User not found' });
+		}
+		console.log(user);
+		const result = await User.update({ password: hashedPassword }, { where: { id: user.dataValues.id } });
+		if (result[0] === 0) {
+			return reply.code(404).send({ message: "User not found or no change" });
+		}
+    	reply.send({ message: "Password updated successfully" });
+	} catch (error) {
+		console.error(error);
+    	reply.code(500).send({ message: "Internal server error" });
+	}
+
+}
